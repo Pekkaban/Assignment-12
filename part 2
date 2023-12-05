@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile Dashboard</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+        }
+
+        #app {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input {
+            margin-bottom: 10px;
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        img {
+            max-width: 100%;
+            border-radius: 50%;
+        }
+
+        p {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app">
+    <h1>User Profile Dashboard</h1>
+
+    <div>
+        <img :src="user.profilePicture" alt="Profile Picture">
+        <p><strong>Name:</strong> {{ user.name }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+
+        <p v-if="user.isAdmin">Welcome, Admin!</p>
+        <p v-else>Welcome, User!</p>
+
+        <p><strong>Age:</strong> {{ userAge }}</p>
+
+        <form @submit.prevent="updateProfile">
+            <label for="name">Name:</label>
+            <input type="text" id="name" v-model="user.name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" v-model="user.email" required>
+
+            <label for="profilePicture">Profile Picture URL:</label>
+            <input type="text" id="profilePicture" v-model="user.profilePicture">
+
+            <button type="submit">Update Profile</button>
+        </form>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            user: {
+                name: 'Zhantore',
+                email: 'zhantore04@gmail.com',
+                profilePicture: 'https://placekitten.com/200/200',
+                isAdmin: true,
+                birthdate: '11-11-2004',
+            },
+        },
+        computed: {
+            userAge() {
+                const birthYear = new Date(this.user.birthdate).getFullYear();
+                const currentYear = new Date().getFullYear();
+                return currentYear - birthYear;
+            },
+        },
+        methods: {
+            updateProfile() {
+                console.log('User profile updated:', this.user);
+            },
+        },
+        watch: {
+            user: {
+                handler(newValue, oldValue) {
+                    console.log('User details modified:', newValue);
+                },
+                deep: true,
+            },
+        },
+        created() {
+            console.log('User Profile Dashboard created.');
+        },
+    });
+</script>
+
+</body>
+</html>
